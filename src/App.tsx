@@ -4,6 +4,8 @@ import { createClient } from "@supabase/supabase-js";
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
 const supabase = createClient(supabaseUrl || "https://example.supabase.co", supabaseAnonKey || "public-anon-key");
+// Temporary convenience PIN only. This is visible in the public website code and is NOT secure for real player data.
+const ADMIN_PASSWORD = "mulama05";
 const PRIZES: Record<string, {pos:string; amount:string}[]> = {
   Men: [{pos:"1st Position",amount:"KES 300,000"},{pos:"2nd Position",amount:"KES 200,000"},{pos:"3rd Position",amount:"KES 150,000"},{pos:"4th Position",amount:"KES 100,000"}],
   Women: [{pos:"1st Position",amount:"KES 200,000"},{pos:"2nd Position",amount:"KES 150,000"},{pos:"3rd Position",amount:"KES 100,000"},{pos:"4th Position",amount:"KES 50,000"}],
@@ -184,11 +186,6 @@ const HERO_SLIDES = [
 ];
 
 export default function App(){
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setAdmin(Boolean(data.session)));
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => setAdmin(Boolean(session)));
-    return () => listener.subscription.unsubscribe();
-  }, []);
   const [tab,setTab]=useState<Tab>("home");
   const [heroSlide,setHeroSlide]=useState(0);
   useEffect(() => {
@@ -198,7 +195,6 @@ export default function App(){
 
   const [division,setDivision]=useState<Division>("Men");
   const [admin,setAdmin]=useState(false);
-  const [adminEmail,setAdminEmail]=useState("");
   const [adminPassword,setAdminPassword]=useState("");
   const [pinError,setPinError]=useState("");
   const [search,setSearch]=useState("");
@@ -997,11 +993,10 @@ export default function App(){
     if(status==="Confirmed") return <span className="inline-block bg-emerald-500 text-white text-[11px] font-bold px-2 py-0.5 rounded-full">Confirmed</span>;
     return <span className="inline-block bg-amber-400 text-black text-[11px] font-bold px-2 py-0.5 rounded-full">Pending</span>;
   }
-  async function unlockAdmin(){
+  function unlockAdmin(){
     setPinError("");
-    const { error } = await supabase.auth.signInWithPassword({ email: adminEmail.trim(), password: adminPassword });
-    if (error) { setPinError(error.message); return; }
-    setAdmin(true); setAdminPassword(""); setNotice("Administrator signed in.");
+    if (adminPassword !== ADMIN_PASSWORD) { setPinError("Incorrect administrator password."); return; }
+    setAdmin(true); setAdminPassword(""); setNotice("Administrator mode unlocked.");
   }
   function renderKnockoutMatch(match:any, div:string, scope:string, ward:string){
     const r=knockoutMap[match.id];
@@ -1597,18 +1592,17 @@ export default function App(){
         {tab==="admin" && (
           <section className="mt-5">
             <h2 className="font-display text-3xl font-extrabold uppercase flex items-center gap-2"><Shield style={{color:accent}}/> Admin Panel</h2>
-            <p className="text-sm text-[#B9CBC1] mt-1">Administrator access is protected by Supabase email and password authentication. Public visitors can browse tournament information without signing in.</p>
+            <p className="text-sm text-[#B9CBC1] mt-1">Enter the administrator password to open the management panel. Public visitors can browse tournament information without signing in. Note: this simple password is for temporary convenience only.</p>
             {!admin ? (
               <form onSubmit={(e)=>{e.preventDefault(); unlockAdmin();}} className="light-form mt-4 max-w-md space-y-3">
                 <h3 className="font-display text-xl font-extrabold uppercase text-[#0B3D2E]">Administrator sign in</h3>
-                <div><label>Email address *</label><input type="email" autoComplete="username" required value={adminEmail} onChange={e=>setAdminEmail(e.target.value)} placeholder="admin@example.com"/></div>
-                <div><label>Password *</label><input type="password" autoComplete="current-password" required value={adminPassword} onChange={e=>setAdminPassword(e.target.value)} placeholder="Enter administrator password"/></div>
+                <div><label>Administrator password *</label><input type="password" autoComplete="current-password" required value={adminPassword} onChange={e=>setAdminPassword(e.target.value)} placeholder="Enter administrator password"/></div>
                 {pinError && <p className="text-sm text-red-700 bg-red-50 border border-red-300 rounded-lg px-3 py-2">{pinError}</p>}
                 <button className="w-full font-bold py-3.5 rounded-xl text-white bg-emerald-700">SIGN IN</button>
               </form>
             ) : (
               <div>
-                <div className="flex gap-2 mt-3"><button onClick={async ()=>{await supabase.auth.signOut(); setAdmin(false); setNotice("Signed out of administrator mode.");}} className="bg-white/10 px-4 py-2 rounded-lg font-bold text-sm">Exit Admin</button><span className="text-sm text-emerald-300 self-center font-bold">✓ Admin unlocked</span></div>
+                <div className="flex gap-2 mt-3"><button onClick={()=>{setAdmin(false); setNotice("Exited administrator mode.");}} className="bg-white/10 px-4 py-2 rounded-lg font-bold text-sm">Exit Admin</button><span className="text-sm text-emerald-300 self-center font-bold">✓ Admin unlocked</span></div>
                 <form onSubmit={handleAdminAddTeam} className="light-form mt-5 space-y-4">
                   <h3 className="font-display text-3xl font-extrabold uppercase text-[#0B3D2E]">ADMIN - ADD NEW TEAM</h3>
                   <p className="hint">Admin only. The team appears instantly in Teams, Wards, Register counts and its correct ward pool. Public self-registrations stay Pending until Admin confirms.</p>
