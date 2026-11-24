@@ -93,3 +93,14 @@ header nav .tab-btn.text-white{color:#FFFFFF!important;background:#0B7A43!import
   :root{--text:#111827;--muted:#4B5563}
   body{background:#F6F8F3;color:#111827}
 }
+
+
+/* Homepage-only football photo slideshow */
+.home-photo-slider{min-height:300px;height:clamp(300px,42vw,520px);background:#071b13;isolation:isolate}
+.home-photo-slider-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;animation:homePhotoReveal .65s ease both}
+.home-photo-slider-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(3,18,12,.78),rgba(3,18,12,.35),rgba(3,18,12,.68))}
+.home-slider-control{width:38px;height:38px;border-radius:999px;border:1px solid rgba(255,255,255,.75);background:rgba(0,0,0,.35);color:#fff;font-size:27px;line-height:1}
+.home-slider-dot{width:9px;height:9px;border-radius:999px;background:rgba(255,255,255,.55);border:0;padding:0}
+.home-slider-dot.is-active{width:25px;background:#F5C518}
+@keyframes homePhotoReveal{from{opacity:.55;transform:scale(1.025)}to{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.home-photo-slider-image{animation:none}}
