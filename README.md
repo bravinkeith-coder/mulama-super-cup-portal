@@ -1,51 +1,30 @@
-# Mulama Super Cup Tournament Portal
+# Mulama Super Cup Portal
 
-A React + TypeScript + Vite portal prepared for Cloudflare Pages, with Supabase for tournament records and administrator authentication.
+A React + Vite + Tailwind portal for the Mulama Super Cup 5th Edition.
 
-## Included improvements
+## Cloudflare Pages deployment
 
-- Reusable Vite project structure and production build setup.
-- Supabase-backed records adapter replacing the unavailable platform-specific `actions` endpoint.
-- Supabase email/password administrator sign-in (the old hard-coded demo PIN was removed).
-- Row Level Security: public visitors can read tournament data and submit team registrations; authenticated users can manage records.
-- Preserves the supplied tournament UI, teams, fixture logic, poster and prize information.
-- Cloudflare Pages SPA fallback.
+- Framework preset: **None**
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Root directory: leave blank
+- Node version: use Node.js 20 or 22
 
-## 1. Configure Supabase
+Cloudflare installs the dependencies from `package.json` automatically.
 
-1. Open your Supabase project.
-2. Go to **SQL Editor → New query**.
-3. Paste and run `supabase-setup.sql`.
-4. Go to **Authentication → Users → Add user** and create the administrator email/password. Do not enable public sign-ups for administrator accounts.
-5. Copy the project URL and publishable/anon key from **Project Settings → API**.
+## Supabase configuration
 
-## 2. Run locally
+The portal uses Supabase Auth and a `portal_records` table. In Cloudflare Pages, open **Settings → Environment variables** and add:
 
-```bash
-cp .env.example .env.local
-# Edit .env.local with your Supabase project URL and publishable/anon key
-npm install
-npm run dev
-```
+- `VITE_SUPABASE_URL` — your Supabase project URL
+- `VITE_SUPABASE_ANON_KEY` — your Supabase anon/public key
 
-## 3. Deploy to Cloudflare Pages (free plan)
+Redeploy after adding or changing environment variables. The Supabase project must also have the `portal_records` table and suitable Row Level Security policies configured. Do not put a Supabase service-role key in frontend environment variables.
 
-1. Push this folder to a GitHub repository.
-2. In Cloudflare Dashboard, open **Workers & Pages → Create → Pages → Connect to Git**.
-3. Select the repository.
-4. Set build command to `npm run build` and build output directory to `dist`.
-5. Add these environment variables under the Pages project settings (Production, and Preview if needed):
-   - `VITE_SUPABASE_URL`
-   - `VITE_SUPABASE_ANON_KEY`
-6. Deploy. Cloudflare will provide a `*.pages.dev` address.
+## Project structure
 
-## Security notes
-
-- Never put the Supabase `service_role` key in this website or any `VITE_` variable.
-- Supabase Row Level Security is enabled by the SQL script. Anonymous inserts are restricted to the `registrations` collection; updates/deletes and other inserts require a signed-in Supabase user.
-- Create administrator accounts yourself in Supabase Authentication. Do not expose admin account creation to public visitors.
-- The browser uses the Supabase publishable/anon key, which is designed to be public when RLS is correctly configured.
-
-## Important deployment validation
-
-The source archive contained only `App.tsx`, `index.css`, and the poster image. It did not include the original platform backend, package manifest, or a complete project scaffold. This package supplies a Vite scaffold and a Supabase records adapter to replace that missing backend. Before using it for a live competition, test public registration, administrator sign-in, match result entry, fixture updates, player records and standings in a Supabase-connected preview.
+- `src/App.tsx` — portal application
+- `src/main.tsx` — React entry point
+- `src/index.css` — portal styling
+- `src/tailwind.css` — Tailwind directives
+- `index.html` — Vite page entry
