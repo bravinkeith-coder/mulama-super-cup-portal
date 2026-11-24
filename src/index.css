@@ -1,0 +1,95 @@
+
+:root{
+  --green:#0B3D2E;
+  --green-2:#0B7A43;
+  --gold:#C9A227;
+  --ink:#F6F8F3;
+  --surface:#FFFFFF;
+  --surface-2:#FFFFFF;
+  --card:#FFFFFF;
+  --line:#DDE3DA;
+  --text:#111827;
+  --muted:#4B5563;
+  --paper:#FFFFFF;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#F6F8F3;color:#111827;font-family:'Archivo',system-ui,-apple-system,Segoe UI,sans-serif;font-size:16px;line-height:1.55}
+.font-display{font-family:'Barlow Condensed','Archivo',sans-serif}
+button,input,select,textarea{font:inherit}
+input,select,textarea{background:#FFFFFF;border:1px solid #B9C4BB;color:#111827;border-radius:10px;padding:.65rem .8rem;width:100%;outline:none}
+input::placeholder,textarea::placeholder,select::placeholder{color:#6B7280;opacity:1}
+input:focus,select:focus,textarea:focus{border-color:#0B7A43;box-shadow:0 0 0 3px rgba(11,122,67,.18)}
+label{color:#111827;font-weight:700}
+.tab-btn{white-space:nowrap}
+.no-scrollbar::-webkit-scrollbar{display:none}
+.no-scrollbar{scrollbar-width:none}
+.badge-initials{font-family:'Barlow Condensed',sans-serif;font-weight:800;letter-spacing:.02em}
+.light-form{background:#ffffff;color:#111827;border:1px solid #DDE3DA;border-radius:1.25rem;padding:1.25rem;box-shadow:0 2px 10px rgba(17,24,39,.05)}
+.light-form label{color:#111827;font-weight:700;font-size:.95rem;display:block;margin-bottom:.25rem}
+.light-form input,.light-form select,.light-form textarea{background:#ffffff!important;color:#111827!important;border:1px solid #B9C4BB!important;border-radius:.65rem;padding:.7rem .8rem;width:100%}
+.light-form input::placeholder,.light-form textarea::placeholder{color:#6B7280;opacity:1}
+.light-form input:focus,.light-form select:focus,.light-form textarea:focus{border-color:#0B7A43!important;box-shadow:0 0 0 3px rgba(11,122,67,.15)}
+.light-form .hint{color:#4B5563;font-size:.85rem}
+.light-form .field-error{color:#B91C1C;font-size:.9rem;font-weight:600;margin-top:.25rem}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%}
+th{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:#0B3D2E;text-align:left;padding:.7rem .6rem;border-bottom:1px solid #DDE3DA;background:#E6F2EB}
+td{padding:.65rem .6rem;border-bottom:1px solid #DDE3DA;font-size:.95rem;color:#111827}
+tr:hover td{background:#F6F8F3}
+
+/* ---- Light-theme overrides for legacy dark utility classes ---- */
+[class*="bg-[#122E24]"],[class*="bg-[#102A21]"]{background:#FFFFFF!important;color:#111827!important;border-color:#DDE3DA!important;box-shadow:0 2px 10px rgba(17,24,39,.05)}
+[class*="bg-[#122E24]"] .text-white,[class*="bg-[#102A21]"] .text-white{color:#111827!important}
+[class*="bg-[#0B3D2E]"]{background:#E6F2EB!important;color:#0B3D2E!important;border-color:#DDE3DA!important}
+[class*="bg-[#0B3D2E]"][class*="text-white"]{color:#0B3D2E!important}
+[class*="bg-[#0B3D2E]"] .text-white{color:#0B3D2E!important}
+[class*="bg-[#07120E]"]{background:#FFFFFF!important;color:#111827!important;border-color:#DDE3DA!important}
+[class*="bg-gradient-to-br"]{background:#E6F2EB!important;background-image:none!important;color:#111827!important;border-color:#DDE3DA!important}
+[class*="bg-white/10"]:not(header *){background:#EEF2EC!important;color:#111827!important;border-color:#DDE3DA!important}
+[class*="bg-white/5"]:not(header *){background:#F6F8F3!important;color:#111827!important}
+[class*="bg-white/20"]:not(header *){background:#EEF2EC!important;color:#111827!important}
+[class*="bg-black/25"]:not(header *){background:#EEF2EC!important;color:#111827!important}
+[class*="bg-black/20"]:not(header *){background:#EEF2EC!important;color:#111827!important}
+[class*="bg-black/30"]:not(header *){background:#EEF2EC!important;color:#111827!important}
+[class*="bg-black/40"]:not(header *){background:#EEF2EC!important;color:#111827!important}
+[class*="border-white/10"]{border-color:#DDE3DA!important}
+[class*="border-white/20"]{border-color:#DDE3DA!important}
+[class*="border-white/15"]{border-color:#DDE3DA!important}
+[class*="text-[#B9CBC1]"]{color:#4B5563!important}
+[class*="text-[#DCE8DF]"]{color:#374151!important}
+[class*="text-[#F5C518]"]{color:#8A6D00!important}
+[class*="bg-[#F5C518]"]{background:#C9A227!important}
+[class*="bg-amber-400/20"]{background:#FEF3C7!important;color:#92400E!important}
+[class*="bg-emerald-500/20"]{background:#D1FAE5!important;color:#065F46!important}
+[class*="bg-emerald-500/10"]{background:#ECFDF5!important;color:#065F46!important}
+.text-amber-100{color:#92400E!important}
+.text-amber-200{color:#92400E!important}
+.text-amber-300{color:#92400E!important}
+.text-emerald-100{color:#065F46!important}
+.text-emerald-300{color:#047857!important}
+.text-emerald-200{color:#065F46!important}
+.bg-emerald-700{background:#0B7A43!important}
+.hover\:bg-emerald-800:hover{background:#095C33!important}
+.bg-red-950\/40{background:#FEF2F2!important;border-color:#FECACA!important}
+.bg-amber-950\/40,.bg-amber-950\/60{background:#FFFBEB!important;color:#92400E!important}
+.text-black\/60{color:#4B5563!important}
+.text-black\/40{color:#6B7280!important}
+
+/* Header stays dark green with high-contrast white text */
+header[class*="bg-[#0B3D2E]"]{background:#0B3D2E!important;color:#FFFFFF!important}
+header [class*="text-[#B9CBC1]"]{color:#D1D5DB!important}
+header [class*="text-[#DCE8DF]"]{color:#E5E7EB!important}
+header [class*="bg-black/25"]{background:rgba(0,0,0,.25)!important;color:#FFFFFF!important}
+header [class*="bg-white/10"]{background:rgba(255,255,255,.14)!important;color:#FFFFFF!important}
+header [class*="bg-white/20"]{background:rgba(255,255,255,.2)!important;color:#FFFFFF!important}
+header .text-white{color:#FFFFFF!important}
+header nav{background:#FFFFFF!important}
+header nav .tab-btn{color:#111827!important;background:#F6F8F3!important;border:1px solid #DDE3DA}
+header nav .tab-btn.text-white{color:#FFFFFF!important;background:#0B7A43!important;border-color:#0B7A43}
+[style*="#EC4899"]{background:#9333EA!important;color:#FFFFFF!important}
+[style*="#F5C518"]{background:#C9A227!important;color:#111827!important}
+@media (prefers-color-scheme: dark){
+  :root{--text:#111827;--muted:#4B5563}
+  body{background:#F6F8F3;color:#111827}
+}
