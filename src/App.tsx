@@ -177,6 +177,12 @@ const emptyOfficial = (): Official => ({name:"",role:"Coach",phone:"",idNo:"",st
 type Tab = "home"|"wards"|"subcounty"|"teams"|"players"|"fixtures"|"matchday"|"livescore"|"matchsheet"|"standings"|"knockout"|"scorers"|"register"|"registered"|"admin";
 type Division = "Men"|"Women"|"All";
 
+const HERO_SLIDES = [
+  { image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1800&q=85", alt: "Floodlit football stadium ready for a match", label: "THE BIGGEST FOOTBALL CELEBRATION IN KIMILILI" },
+  { image: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1800&q=85", alt: "Footballers competing during a match", label: "PASSION • TALENT • COMMUNITY" },
+  { image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1800&q=85", alt: "Football pitch and match action", label: "ONE COMMUNITY. ONE DREAM. ONE TROPHY!" },
+];
+
 export default function App(){
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setAdmin(Boolean(data.session)));
@@ -184,6 +190,12 @@ export default function App(){
     return () => listener.subscription.unsubscribe();
   }, []);
   const [tab,setTab]=useState<Tab>("home");
+  const [heroSlide,setHeroSlide]=useState(0);
+  useEffect(() => {
+    const timer = window.setInterval(() => setHeroSlide(current => (current + 1) % HERO_SLIDES.length), 6000);
+    return () => window.clearInterval(timer);
+  }, []);
+
   const [division,setDivision]=useState<Division>("Men");
   const [admin,setAdmin]=useState(false);
   const [adminEmail,setAdminEmail]=useState("");
@@ -1139,7 +1151,22 @@ export default function App(){
       <main className="max-w-7xl mx-auto px-3 sm:px-6 pb-16">
         {tab==="home" && (
           <div>
-            <section className="mt-5 rounded-3xl overflow-hidden border-2 border-[#C9A227] relative" style={{backgroundImage:"linear-gradient(135deg, #ffffff 0%, #E6F2EB 55%, #F6F8F3 100%)"}}>
+            <section className="home-photo-slider mt-5 relative overflow-hidden rounded-3xl border-2 border-[#C9A227]" aria-label="Mulama Super Cup football photo slideshow">
+              <img key={HERO_SLIDES[heroSlide].image} src={HERO_SLIDES[heroSlide].image} alt={HERO_SLIDES[heroSlide].alt} className="home-photo-slider-image" />
+              <div className="home-photo-slider-shade" />
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-5 py-10 text-center text-white">
+                <p className="text-xs sm:text-sm font-extrabold tracking-[.28em] text-[#F5C518]">KIMILILI CONSTITUENCY • 2026</p>
+                <h2 className="mt-3 font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold uppercase leading-none drop-shadow-lg">MULAMA SUPER CUP</h2>
+                <p className="mt-3 text-lg sm:text-2xl font-extrabold drop-shadow-lg">5TH EDITION</p>
+                <p className="mt-2 text-sm sm:text-base font-bold drop-shadow-lg">{HERO_SLIDES[heroSlide].label}</p>
+                <div className="mt-6 flex items-center gap-3">
+                  <button type="button" aria-label="Previous slideshow photo" onClick={()=>setHeroSlide(current=>(current+HERO_SLIDES.length-1)%HERO_SLIDES.length)} className="home-slider-control">‹</button>
+                  {HERO_SLIDES.map((slide,index)=><button key={slide.image} type="button" aria-label={`Show photo ${index+1}`} onClick={()=>setHeroSlide(index)} className={`home-slider-dot ${heroSlide===index?"is-active":""}`} />)}
+                  <button type="button" aria-label="Next slideshow photo" onClick={()=>setHeroSlide(current=>(current+1)%HERO_SLIDES.length)} className="home-slider-control">›</button>
+                </div>
+              </div>
+            </section>
+            <section className="mt-5 rounded-3xl overflow-hidden border-2 border-[#C9A227] relative style={{backgroundImage:"linear-gradient(135deg, #ffffff 0%, #E6F2EB 55%, #F6F8F3 100%)"}}>
               <div className="absolute inset-0 bg-white/85" aria-hidden="true" />
               <div className="relative p-5 sm:p-10">
               <div className="h-1.5 rounded-full bg-gradient-to-r from-[#1E3A8A] via-[#C9A227] to-[#0B7A43]" />
